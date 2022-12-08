@@ -1,9 +1,12 @@
 #include "QuickMenu.h"
 
-QuickMenu::QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu){
+QuickMenu::QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu, uint8_t _variable_monitor_length){
   TRQDF_keypad = _keypad;
   TRQDF_lcd = _lcd_i2c;
   TRQDF_mainMenu = _main_menu;
+  if (_variable_monitor_length > 255) _variable_monitor_length = 255;
+  if (_variable_monitor_length < 1) _variable_monitor_length = 1;
+  VAR_Monitor_temp = (unsigned long *) malloc(_variable_monitor_length * sizeof(unsigned long));
 }
 
 void QuickMenu::begin(){
@@ -33,6 +36,16 @@ QMenu* QuickMenu::MENU_now(int index){
   return &MENULevel[index].menu[MENULevel[index].index];
 }
 
+
+bool QuickMenu::eventChange(u_int16_t var){
+  bool _return = false;
+  if(VAR_Monitor_temp[VAR_Monitor_index] != var){
+    _return = true;
+  }
+  VAR_Monitor_temp[VAR_Monitor_index] = var;
+  VAR_Monitor_index++;
+  return _return;
+}
 
 void QuickMenu::displayMenu(){
   MENU_Display_initial = true;
@@ -252,6 +265,7 @@ void QuickMenu::loop(){
     }
   }
   displayText();
+  VAR_Monitor_index = 0;
 }
 
 bool QuickMenu::isMenuActive(){
