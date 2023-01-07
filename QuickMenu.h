@@ -1,6 +1,6 @@
 //
 // QuickMenu Library by @triqadafi
-// TRQDF is a shorthand of triqadafi
+// TQDF is a shorthand of triqadafi
 // 2022 (C) www.triqada.fi
 //
 //
@@ -12,8 +12,8 @@
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
 
-#ifndef TRQDF_QuickMenu_h
-#define TRQDF_QuickMenu_h
+#ifndef TQDF_QuickMenu_h
+#define TQDF_QuickMenu_h
 
 #define MENULevel_MAX 2
 #define LCDString_WIDTH 16+1
@@ -62,7 +62,7 @@ class QuickMenu
 {
   public:
     /**
-     * @brief Construct a new TRQDF_QuickMenu object
+     * @brief Construct a new TQDF_QuickMenu object
      * 
      * @param _keypad keypad instance
      * @param _lcd_i2c LCD i2c instance
@@ -120,9 +120,9 @@ class QuickMenu
     bool eventChange(u_int16_t var);
     
   private:
-    LiquidCrystal_I2C* TRQDF_lcd;
-    Keypad* TRQDF_keypad;
-    QMenu* TRQDF_mainMenu;
+    LiquidCrystal_I2C* TQDF_lcd;
+    Keypad* TQDF_keypad;
+    QMenu* TQDF_mainMenu;
 
     QMLevel* MENULevel_now();
     QMenu* MENU_now(int index = 0);

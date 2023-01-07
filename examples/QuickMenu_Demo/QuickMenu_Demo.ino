@@ -34,10 +34,10 @@ Keypad keypad = Keypad( makeKeymap(keys), rowPins, colPins, KEYPAD_ROWS, KEYPAD_
  
 //========================================================
 #define MAIN_PERIOD 1000
-unsigned long TRQDF_MAIN_millis = 0;
-unsigned long TRQDF_MAIN_period = MAIN_PERIOD;
+unsigned long TQDF_MAIN_millis = 0;
+unsigned long TQDF_MAIN_period = MAIN_PERIOD;
 
-unsigned long TRQDF_STATE1_millis = 0;
+unsigned long TQDF_STATE1_millis = 0;
 
 //========================================================
 // QuickMenu Variables
@@ -111,8 +111,8 @@ void loop() {
     lcd_i2c.setCursor(0, 0);
     lcd_i2c.print("QMenu State 1");
     while(1){
-      if(millis() - TRQDF_STATE1_millis > 1000){
-        TRQDF_STATE1_millis = millis();
+      if(millis() - TQDF_STATE1_millis > 1000){
+        TQDF_STATE1_millis = millis();
         Serial.println("#");
       }
 
@@ -124,8 +124,8 @@ void loop() {
   
   // EXAMPLE: main loop
   // PLEASE DONT use delay()! use millis base delay!
-  if(millis() - TRQDF_MAIN_millis > TRQDF_MAIN_period){
-    TRQDF_MAIN_millis = millis();
+  if(millis() - TQDF_MAIN_millis > TQDF_MAIN_period){
+    TQDF_MAIN_millis = millis();
     
     // EXAMPLE: update main screen when not in menu
     //          Data is a random number between 0-100

@@ -1,25 +1,25 @@
 #include "QuickMenu.h"
 
 QuickMenu::QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu, uint8_t _variable_monitor_length){
-  TRQDF_keypad = _keypad;
-  TRQDF_lcd = _lcd_i2c;
-  TRQDF_mainMenu = _main_menu;
+  TQDF_keypad = _keypad;
+  TQDF_lcd = _lcd_i2c;
+  TQDF_mainMenu = _main_menu;
   if (_variable_monitor_length > 255) _variable_monitor_length = 255;
   if (_variable_monitor_length < 1) _variable_monitor_length = 1;
   VAR_Monitor_temp = (unsigned long *) malloc(_variable_monitor_length * sizeof(unsigned long));
 }
 
 void QuickMenu::begin(){
-  TRQDF_lcd->clear();
+  TQDF_lcd->clear();
 }
 
 void QuickMenu::idle(){
   if(MENU_Idle_enable){
-    TRQDF_lcd->clear();
-    TRQDF_lcd->setCursor(0, 0);
-    TRQDF_lcd->print("Press # to");
-    TRQDF_lcd->setCursor(0, 1);
-    TRQDF_lcd->print("enter the QMenu"); 
+    TQDF_lcd->clear();
+    TQDF_lcd->setCursor(0, 0);
+    TQDF_lcd->print("Press # to");
+    TQDF_lcd->setCursor(0, 1);
+    TQDF_lcd->print("enter the QMenu"); 
   }
 }
 
@@ -53,16 +53,16 @@ void QuickMenu::displayMenu(){
     idle();
   }else if(MENULevel_index == 0){
     MENULevel_now()->index = 0;
-    MENULevel_now()->menu = TRQDF_mainMenu;
-    MENULevel_now()->menuLength = sizeof(&TRQDF_mainMenu);
+    MENULevel_now()->menu = TQDF_mainMenu;
+    MENULevel_now()->menuLength = sizeof(&TQDF_mainMenu);
     MENULevel_now()->dropDownLength = 0;
     MENU_Title_index = 0;
  
-    TRQDF_lcd->clear();
+    TQDF_lcd->clear();
   }else{
-    TRQDF_lcd->clear();
-    TRQDF_lcd->setCursor(0, 0);
-    TRQDF_lcd->print(MENU_now(-1)->title);
+    TQDF_lcd->clear();
+    TQDF_lcd->setCursor(0, 0);
+    TQDF_lcd->print(MENU_now(-1)->title);
     MENULevel_now()->dropDownLength = 0;
   }
 }
@@ -76,26 +76,26 @@ void QuickMenu::displayText(){
       MENU_DisplayRow1_begin = true;
 
       if(KEYPAD_isKeyInput){
-        TRQDF_lcd->setCursor(0, 0);
+        TQDF_lcd->setCursor(0, 0);
         if(((MENU_TitleRotation_index % 8) == 0) || ((MENU_TitleRotation_index % 8) == 1)){
-          TRQDF_lcd->print(MENU_Title_text);
+          TQDF_lcd->print(MENU_Title_text);
         }else if(((MENU_TitleRotation_index % 8) == 2) || ((MENU_TitleRotation_index % 8) == 3)){
-          TRQDF_lcd->print(MENU_Title_desc);
+          TQDF_lcd->print(MENU_Title_desc);
         }else if(((MENU_TitleRotation_index % 8) == 4) || ((MENU_TitleRotation_index % 8) == 5)){
-          TRQDF_lcd->print("# to Save       ");
+          TQDF_lcd->print("# to Save       ");
         }else{
-          TRQDF_lcd->print("* to Cancel     ");
+          TQDF_lcd->print("* to Cancel     ");
         }
         MENU_TitleRotation_index++;
       }else if(MENULevel_index == 0){
-        TRQDF_lcd->setCursor(0, 0);
+        TQDF_lcd->setCursor(0, 0);
         if(((MENU_TitleRotation_index % 4) == 0) || ((MENU_TitleRotation_index % 4) == 1)){
-          TRQDF_lcd->setCursor(0, 0);
-          TRQDF_lcd->print("Choose [1..");
-          TRQDF_lcd->print(sizeof(&TRQDF_mainMenu));
-          TRQDF_lcd->print("]   ");
+          TQDF_lcd->setCursor(0, 0);
+          TQDF_lcd->print("Choose [1..");
+          TQDF_lcd->print(sizeof(&TQDF_mainMenu));
+          TQDF_lcd->print("]   ");
         }else{
-          TRQDF_lcd->print("#/* to close    ");
+          TQDF_lcd->print("#/* to close    ");
         }
         MENU_TitleRotation_index++;
       }
@@ -112,8 +112,8 @@ void QuickMenu::displayText(){
           {
             MENU_Title_index = 0;
           }
-          TRQDF_lcd->setCursor(0, 1);
-          TRQDF_lcd->print(MENULevel_now()->menu[MENU_Title_index++].title);
+          TQDF_lcd->setCursor(0, 1);
+          TQDF_lcd->print(MENULevel_now()->menu[MENU_Title_index++].title);
         }
       }
       switch(MENU_now()->dataType){
@@ -123,10 +123,10 @@ void QuickMenu::displayText(){
             {
               MENU_Title_index = 0;
             }
-            TRQDF_lcd->setCursor(0, 1);
+            TQDF_lcd->setCursor(0, 1);
             char *dropdown_item = MENULevel_now()->dropDown + (MENU_Title_index++ * (LCDString_WIDTH));
             *(dropdown_item + 14) = '\0';
-            TRQDF_lcd->print(dropdown_item);
+            TQDF_lcd->print(dropdown_item);
           }
           break;
       }
@@ -135,7 +135,7 @@ void QuickMenu::displayText(){
 }
 
 void QuickMenu::loop(){
-  char key = TRQDF_keypad->getKey();
+  char key = TQDF_keypad->getKey();
   if (key){
     if(key == '#'){
       if(KEYPAD_isKeyInput){
@@ -157,17 +157,17 @@ void QuickMenu::loop(){
               MENU_Title_index = 0;
               break;
           }
-          TRQDF_lcd->clear();
-          TRQDF_lcd->print(MENU_Title_text);
-          TRQDF_lcd->setCursor(0, 1);
-          TRQDF_lcd->print(KEYPAD_KeyInput_int);
-          TRQDF_lcd->print(" saved!");
+          TQDF_lcd->clear();
+          TQDF_lcd->print(MENU_Title_text);
+          TQDF_lcd->setCursor(0, 1);
+          TQDF_lcd->print(KEYPAD_KeyInput_int);
+          TQDF_lcd->print(" saved!");
           delay(1000);
         }else{
-          TRQDF_lcd->clear();
-          TRQDF_lcd->print(MENU_Title_text);
-          TRQDF_lcd->setCursor(0, 1);
-          TRQDF_lcd->print("*    !Out Range!");
+          TQDF_lcd->clear();
+          TQDF_lcd->print(MENU_Title_text);
+          TQDF_lcd->setCursor(0, 1);
+          TQDF_lcd->print("*    !Out Range!");
           delay(1000);
 
         }
@@ -191,13 +191,13 @@ void QuickMenu::loop(){
           case UInt8:
           case UInt16:
             KEYPAD_KeyInput_char += key;
-            TRQDF_lcd->setCursor(KEYPAD_KeyInput_position++, 1);
-            TRQDF_lcd->print(key);
+            TQDF_lcd->setCursor(KEYPAD_KeyInput_position++, 1);
+            TQDF_lcd->print(key);
             break;
           case textDropDown:
             KEYPAD_KeyInput_char = key;
-            TRQDF_lcd->setCursor(KEYPAD_KeyInput_position, 1);
-            TRQDF_lcd->print(key);
+            TQDF_lcd->setCursor(KEYPAD_KeyInput_position, 1);
+            TQDF_lcd->print(key);
             break;
         }
       }else{ // if input not required
@@ -207,9 +207,9 @@ void QuickMenu::loop(){
           MENU_Title_text = MENU_now()->title;
           MENU_Title_desc = MENU_now()->desc;
 
-          TRQDF_lcd->clear();
-          TRQDF_lcd->print(MENU_Title_text);
-          TRQDF_lcd->setCursor(0, 1);
+          TQDF_lcd->clear();
+          TQDF_lcd->print(MENU_Title_text);
+          TQDF_lcd->setCursor(0, 1);
 
           MENU_TitleRotation_index = 0;
           KEYPAD_KeyInput_position = 8;
@@ -225,24 +225,24 @@ void QuickMenu::loop(){
           switch(MENU_now()->dataType){
             case UInt8:
               KEYPAD_isKeyInput = true;
-              TRQDF_lcd->print(*(byte*)MENU_now()->dataVariable);
-              TRQDF_lcd->setCursor(6, 1);
-              TRQDF_lcd->print("=>0");
+              TQDF_lcd->print(*(byte*)MENU_now()->dataVariable);
+              TQDF_lcd->setCursor(6, 1);
+              TQDF_lcd->print("=>0");
               break;
             case UInt16:
               KEYPAD_isKeyInput = true;
-              TRQDF_lcd->print(*(uint16_t*)MENU_now()->dataVariable);
-              TRQDF_lcd->setCursor(6, 1);
-              TRQDF_lcd->print("=>0");
+              TQDF_lcd->print(*(uint16_t*)MENU_now()->dataVariable);
+              TQDF_lcd->setCursor(6, 1);
+              TQDF_lcd->print("=>0");
               break;
             case textDropDown:
               KEYPAD_isKeyInput = true;
               MENULevel_now()->dropDownLength = MENU_now()->param_a;
               MENULevel_now()->dropDown = MENU_now()->menuSub;
               MENU_Title_index = 0;
-              TRQDF_lcd->print(*(uint8_t*)MENU_now()->dataVariable);
-              TRQDF_lcd->setCursor(14, 1);
-              TRQDF_lcd->print(">0");
+              TQDF_lcd->print(*(uint8_t*)MENU_now()->dataVariable);
+              TQDF_lcd->setCursor(14, 1);
+              TQDF_lcd->print(">0");
               KEYPAD_KeyInput_position = 15;
               // delay(1000);
               break;
@@ -279,14 +279,14 @@ void QuickMenu::showIdleText(bool opt){
 }
 
 bool QuickMenu::resetState(){
-  char key = TRQDF_keypad->getKey();
+  char key = TQDF_keypad->getKey();
   if(key == '#'){
     SYS_State = 0;
     MENULevel_index = -1;
     
-    TRQDF_lcd->clear();
-    TRQDF_lcd->setCursor(0, 1);
-    TRQDF_lcd->print("Stopping...");
+    TQDF_lcd->clear();
+    TQDF_lcd->setCursor(0, 1);
+    TQDF_lcd->print("Stopping...");
     delay(1000);
     displayMenu();
 
@@ -299,15 +299,15 @@ bool QuickMenu::resetState(){
 
 /*
 void QuickMenu::begin(){
-  TRQDF_lcd->clear();
+  TQDF_lcd->clear();
 }
   char msg[17];
 
   Switch menu mechanism
   MENULevel_index = 0;
   MENULevel[MENULevel_index].index = 0;
-  MENULevel[MENULevel_index].menu = TRQDF_mainMenu;
-  MENULevel[MENULevel_index].menuLength = array_sizeof(TRQDF_mainMenu);
+  MENULevel[MENULevel_index].menu = TQDF_mainMenu;
+  MENULevel[MENULevel_index].menuLength = array_sizeof(TQDF_mainMenu);
   MENULevel[MENULevel_index].dropDownLength = 0;
 
   MENULevel_index++;
@@ -318,11 +318,11 @@ void QuickMenu::begin(){
   MENULevel[MENULevel_index].dropDownLength = 0;
 
   sprintf(msg, "%p", MENULevel[MENULevel_index].menuLength);
-  TRQDF_lcd->setCursor(0, 0);
-  TRQDF_lcd->print(msg);
+  TQDF_lcd->setCursor(0, 0);
+  TQDF_lcd->print(msg);
   sprintf(msg, "%p", MENU_now(-1)->param_a);
-  TRQDF_lcd->setCursor(0, 1);
-  TRQDF_lcd->print(msg);
+  TQDF_lcd->setCursor(0, 1);
+  TQDF_lcd->print(msg);
   LOG
   0x200000d0 &MENUAlarm_items
   0x200000ac &MENUActive_items
@@ -341,20 +341,20 @@ void QuickMenu::begin(){
   0x20000234 &MENUMain_items[3].menuSub
 
 
-  0x200000ac TRQDF_mainMenu[0].menuSub <- Real pointer
-  0x20000198 &TRQDF_mainMenu[0].menuSub
-  0x00000000 TRQDF_mainMenu[1].menuSub <- Real pointer
-  0x200001cc &TRQDF_mainMenu[1].menuSub
-  0x200000d0 TRQDF_mainMenu[2].menuSub <- Real pointer
-  0x20000200 &TRQDF_mainMenu[2].menuSub
-  0x00000000 TRQDF_mainMenu[3].menuSub <- Real pointer
-  0x20000234 &TRQDF_mainMenu[3].menuSub
+  0x200000ac TQDF_mainMenu[0].menuSub <- Real pointer
+  0x20000198 &TQDF_mainMenu[0].menuSub
+  0x00000000 TQDF_mainMenu[1].menuSub <- Real pointer
+  0x200001cc &TQDF_mainMenu[1].menuSub
+  0x200000d0 TQDF_mainMenu[2].menuSub <- Real pointer
+  0x20000200 &TQDF_mainMenu[2].menuSub
+  0x00000000 TQDF_mainMenu[3].menuSub <- Real pointer
+  0x20000234 &TQDF_mainMenu[3].menuSub
 
-  0x2000016c TRQDF_mainMenu <- correct!
+  0x2000016c TQDF_mainMenu <- correct!
 
   QMenu level debug
   0x6341RAND MENULevel[0].menu[MENULevel[0].index]  !thats the pointer address
-  0x2000016c &MENULevel[0].menu[MENULevel[0].index] <- means that level 0 has TRQDF_mainMenu items
+  0x2000016c &MENULevel[0].menu[MENULevel[0].index] <- means that level 0 has TQDF_mainMenu items
 
   0x2000016c &MENULevel[0].menu[0]
   0x200001a0 &MENULevel[0].menu[1]
@@ -385,12 +385,12 @@ void QuickMenu::begin(){
   MENULevel[MENULevel_index].menuLength = MENULevel[MENULevel_index-1].menu[MENULevel[MENULevel_index-1].index].jumlahBaris;
   MENULevel[MENULevel_index].dropDownLength = 0;
 
-  TRQDF_lcd->clear();
+  TQDF_lcd->clear();
   sprintf(msg, "%p", TestMENU_now(1));
-  TRQDF_lcd->setCursor(0, 0);
-  TRQDF_lcd->print(msg);
+  TQDF_lcd->setCursor(0, 0);
+  TQDF_lcd->print(msg);
   sprintf(msg, "%p", MENULevel[1].menu[MENULevel[1].index]);
-  TRQDF_lcd->setCursor(0, 1);
-  TRQDF_lcd->print(msg);
+  TQDF_lcd->setCursor(0, 1);
+  TQDF_lcd->print(msg);
 */
 
