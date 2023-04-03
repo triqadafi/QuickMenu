@@ -83,7 +83,7 @@ QMenu MENUMain_items[] =
   //{"5.Custom QMenu   "         , ""                  ,  systemState      , 0                       , 0               , 0               , 0                           , 1           },
 };
 //========================================================
-QuickMenu menu(&keypad, &lcd_i2c, MENUMain_items);
+QuickMenu menu(&keypad, &lcd_i2c, MENUMain_items, QuickMenu_Size(MENUMain_items));
 //========================================================
 
  

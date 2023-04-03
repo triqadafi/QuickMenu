@@ -1,9 +1,10 @@
 #include "QuickMenu.h"
 
-QuickMenu::QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu, uint8_t _variable_monitor_length){
+QuickMenu::QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu, uint8_t _menu_size, uint8_t _variable_monitor_length){
   TQDF_keypad = _keypad;
   TQDF_lcd = _lcd_i2c;
   TQDF_mainMenu = _main_menu;
+  TQDF_mainMenu_size = _menu_size;
   if (_variable_monitor_length > 255) _variable_monitor_length = 255;
   if (_variable_monitor_length < 1) _variable_monitor_length = 1;
   VAR_Monitor_temp = (unsigned long *) malloc(_variable_monitor_length * sizeof(unsigned long));
@@ -54,7 +55,7 @@ void QuickMenu::displayMenu(){
   }else if(MENULevel_index == 0){
     MENULevel_now()->index = 0;
     MENULevel_now()->menu = TQDF_mainMenu;
-    MENULevel_now()->menuLength = sizeof(&TQDF_mainMenu);
+    MENULevel_now()->menuLength = TQDF_mainMenu_size;
     MENULevel_now()->dropDownLength = 0;
     MENU_Title_index = 0;
  
@@ -92,7 +93,7 @@ void QuickMenu::displayText(){
         if(((MENU_TitleRotation_index % 4) == 0) || ((MENU_TitleRotation_index % 4) == 1)){
           TQDF_lcd->setCursor(0, 0);
           TQDF_lcd->print("Choose [1..");
-          TQDF_lcd->print(sizeof(&TQDF_mainMenu));
+          TQDF_lcd->print(TQDF_mainMenu_size);
           TQDF_lcd->print("]   ");
         }else{
           TQDF_lcd->print("#/* to close    ");

@@ -17,7 +17,7 @@
 
 #define MENULevel_MAX 2
 #define LCDString_WIDTH 16+1
-#define array_sizeof(type) sizeof(type)/sizeof(type[0])
+#define QuickMenu_Size(type) sizeof(type)/sizeof(type[0])
 
  
 enum QMMode {
@@ -68,7 +68,7 @@ class QuickMenu
      * @param _lcd_i2c LCD i2c instance
      * @param _main_menu main menu variable
      */
-    QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu, uint8_t _variable_monitor_length = 5);
+    QuickMenu(Keypad *_keypad, LiquidCrystal_I2C *_lcd_i2c, QMenu *_main_menu, uint8_t _menu_size, uint8_t _variable_monitor_length = 5);
 
     /**
      * @brief Menu idle state
@@ -123,7 +123,8 @@ class QuickMenu
     LiquidCrystal_I2C* TQDF_lcd;
     Keypad* TQDF_keypad;
     QMenu* TQDF_mainMenu;
-
+    uint8_t TQDF_mainMenu_size;
+    
     QMLevel* MENULevel_now();
     QMenu* MENU_now(int index = 0);
 
